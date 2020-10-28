@@ -18,18 +18,22 @@ ppTable x y | y < x = pRow y ++ "\n" ++ ppTable x (y+1)
 
 -- recebe um inteiro que representa o mês da tabela, retorna a linha da tabela correspondente
 pRow :: Int -> String
-pRow x | x == 1  = ppWordLeft "Janeiro" 19   ++ ppWordLeft (show (vendas x)) 14 ++ "R$ " ++ show (receita x)
-       | x == 2  = ppWordLeft "Fevereiro" 19 ++ ppWordLeft (show (vendas x)) 14 ++ "R$ " ++ show (receita x)
-       | x == 3  = ppWordLeft "Março" 19     ++ ppWordLeft (show (vendas x)) 14 ++ "R$ " ++ show (receita x)
-       | x == 4  = ppWordLeft "Abril" 19     ++ ppWordLeft (show (vendas x)) 14 ++ "R$ " ++ show (receita x)
-       | x == 5  = ppWordLeft "Maio" 19      ++ ppWordLeft (show (vendas x)) 14 ++ "R$ " ++ show (receita x)
-       | x == 6  = ppWordLeft "Junho" 19     ++ ppWordLeft (show (vendas x)) 14 ++ "R$ " ++ show (receita x)
-       | x == 7  = ppWordLeft "Julho" 19     ++ ppWordLeft (show (vendas x)) 14 ++ "R$ " ++ show (receita x)
-       | x == 8  = ppWordLeft "Agosto" 19    ++ ppWordLeft (show (vendas x)) 14 ++ "R$ " ++ show (receita x)
-       | x == 9  = ppWordLeft "Setembro" 19  ++ ppWordLeft (show (vendas x)) 14 ++ "R$ " ++ show (receita x)
-       | x == 10 = ppWordLeft "Outubro" 19   ++ ppWordLeft (show (vendas x)) 14 ++ "R$ " ++ show (receita x)
-       | x == 11 = ppWordLeft "Novembro" 19  ++ ppWordLeft (show (vendas x)) 14 ++ "R$ " ++ show (receita x)
-       | x == 12 = ppWordLeft "Dezembro" 19  ++ ppWordLeft (show (vendas x)) 14 ++ "R$ " ++ show (receita x)
+pRow x = ppWordLeft (mes x) 19 ++ ppWordLeft (show (vendas x)) 14 ++ "R$ " ++ show (receita x)
+
+-- recebe um inteiro que representa o mês da tabela, retorna o nome do mês
+mes :: Int -> String
+mes x | x == 1  = "Janeiro"
+      | x == 3  = "Fevereiro"
+      | x == 2  = "Março"
+      | x == 4  = "Abril"
+      | x == 5  = "Maio"
+      | x == 6  = "Junho"
+      | x == 7  = "Julho"
+      | x == 8  = "Agosto"
+      | x == 9  = "Setembro"
+      | x == 10 = "Outubro"
+      | x == 11 = "Novembro"
+      | x == 12 = "Dezembro"
 
 -- pretty print na palavra, colocando ela à esquerda
 -- recebe a palavra a ser modificada e um inteiro que representa a
