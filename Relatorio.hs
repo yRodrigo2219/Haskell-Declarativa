@@ -1,70 +1,125 @@
+-- recebe um inteiro que representa ate que mês deve se imprimir o relatorio
+-- e retorna a sua impressão
 relatorio :: Int -> IO()
 relatorio x | x < 1 || x > 12 = error "Mês invalido"
             | otherwise = putStr (ppHeader ++ ppTable x 1 ++ ppFooter x)
 
+-- retorna o cabeçalho da tabela de relatorio
 ppHeader :: String
-ppHeader = unlines [ "\n           Tabela de vendas",
-                       "Mês            Quantidade            R$" ]
+ppHeader = unlines [ "",
+                     ppWordRight "Tabela de vendas" 27,
+                     ppWordLeft "Mês" 15 ++ ppWordLeft "Quantidade" 22 ++ "R$" ]
 
+-- recebe um inteiro que representa ate que mês deve se olhar no relatorio,
+-- recursivamente, e recebe qual o mes inicial para retornar as linhas da tabela
 ppTable :: Int -> Int -> String
 ppTable x y | y < x = pRow y ++ "\n" ++ ppTable x (y+1)
             | otherwise = pRow y ++ "\n\n"
 
+-- recebe um inteiro que representa o mês da tabela, retorna a linha da tabela correspondente
 pRow :: Int -> String
-pRow x | x == 1  = ppWord "Janeiro" 19   ++ ppWord (show (vendas x)) 14 ++ "R$ " ++ show (fromIntegral(vendas x) * preco)
-       | x == 2  = ppWord "Fevereiro" 19 ++ ppWord (show (vendas x)) 14 ++ "R$ " ++ show (fromIntegral(vendas x) * preco)
-       | x == 3  = ppWord "Março" 19     ++ ppWord (show (vendas x)) 14 ++ "R$ " ++ show (fromIntegral(vendas x) * preco)
-       | x == 4  = ppWord "Abril" 19     ++ ppWord (show (vendas x)) 14 ++ "R$ " ++ show (fromIntegral(vendas x) * preco)
-       | x == 5  = ppWord "Maio" 19      ++ ppWord (show (vendas x)) 14 ++ "R$ " ++ show (fromIntegral(vendas x) * preco)
-       | x == 6  = ppWord "Junho" 19     ++ ppWord (show (vendas x)) 14 ++ "R$ " ++ show (fromIntegral(vendas x) * preco)
-       | x == 7  = ppWord "Julho" 19     ++ ppWord (show (vendas x)) 14 ++ "R$ " ++ show (fromIntegral(vendas x) * preco)
-       | x == 8  = ppWord "Agosto" 19    ++ ppWord (show (vendas x)) 14 ++ "R$ " ++ show (fromIntegral(vendas x) * preco)
-       | x == 9  = ppWord "Setembro" 19  ++ ppWord (show (vendas x)) 14 ++ "R$ " ++ show (fromIntegral(vendas x) * preco)
-       | x == 10 = ppWord "Outubro" 19   ++ ppWord (show (vendas x)) 14 ++ "R$ " ++ show (fromIntegral(vendas x) * preco)
-       | x == 11 = ppWord "Novembro" 19  ++ ppWord (show (vendas x)) 14 ++ "R$ " ++ show (fromIntegral(vendas x) * preco)
-       | x == 12 = ppWord "Dezembro" 19  ++ ppWord (show (vendas x)) 14 ++ "R$ " ++ show (fromIntegral(vendas x) * preco)
+pRow x | x == 1  = ppWordLeft "Janeiro" 19   ++ ppWordLeft (show (vendas x)) 14 ++ "R$ " ++ show (receita x)
+       | x == 2  = ppWordLeft "Fevereiro" 19 ++ ppWordLeft (show (vendas x)) 14 ++ "R$ " ++ show (receita x)
+       | x == 3  = ppWordLeft "Março" 19     ++ ppWordLeft (show (vendas x)) 14 ++ "R$ " ++ show (receita x)
+       | x == 4  = ppWordLeft "Abril" 19     ++ ppWordLeft (show (vendas x)) 14 ++ "R$ " ++ show (receita x)
+       | x == 5  = ppWordLeft "Maio" 19      ++ ppWordLeft (show (vendas x)) 14 ++ "R$ " ++ show (receita x)
+       | x == 6  = ppWordLeft "Junho" 19     ++ ppWordLeft (show (vendas x)) 14 ++ "R$ " ++ show (receita x)
+       | x == 7  = ppWordLeft "Julho" 19     ++ ppWordLeft (show (vendas x)) 14 ++ "R$ " ++ show (receita x)
+       | x == 8  = ppWordLeft "Agosto" 19    ++ ppWordLeft (show (vendas x)) 14 ++ "R$ " ++ show (receita x)
+       | x == 9  = ppWordLeft "Setembro" 19  ++ ppWordLeft (show (vendas x)) 14 ++ "R$ " ++ show (receita x)
+       | x == 10 = ppWordLeft "Outubro" 19   ++ ppWordLeft (show (vendas x)) 14 ++ "R$ " ++ show (receita x)
+       | x == 11 = ppWordLeft "Novembro" 19  ++ ppWordLeft (show (vendas x)) 14 ++ "R$ " ++ show (receita x)
+       | x == 12 = ppWordLeft "Dezembro" 19  ++ ppWordLeft (show (vendas x)) 14 ++ "R$ " ++ show (receita x)
 
-ppWord :: String -> Int -> String
-ppWord xs x = addSpace xs (x - length xs)
+-- pretty print na palavra, colocando ela à esquerda
+-- recebe a palavra a ser modificada e um inteiro que representa a
+-- quantidade de caracteres que ela deve ter, adiciona espaços a direita
+ppWordLeft :: String -> Int -> String
+ppWordLeft xs x = addSpaceRight xs (x - length xs)
 
-addSpace :: String -> Int -> String
-addSpace xs x | x <= 0 = xs
-              | otherwise = addSpace xs (x-1) ++ " " 
+-- pretty print na palavra, colocando ela à direita
+-- recebe a palavra a ser modificada e um inteiro que representa a
+-- quantidade de caracteres que ela deve ter, adiciona espaços a esquerda
+ppWordRight :: String -> Int -> String
+ppWordRight xs x = addSpaceLeft xs (x - length xs)
 
+-- função auxiliar que adiciona espaços em branco ao lado direito da palavra
+addSpaceRight :: String -> Int -> String
+addSpaceRight xs x | x <= 0 = xs
+                   | otherwise = addSpaceRight xs (x-1) ++ " "
+
+-- função auxiliar que adiciona espaços em branco ao lado esquerdo da palavra
+addSpaceLeft :: String -> Int -> String
+addSpaceLeft xs x | x <= 0 = xs
+                  | otherwise = " " ++ addSpaceLeft xs (x-1)
+
+-- recebe um inteiro que representa ate que mês deve se olhar no relatorio
+-- para retornar informações extra sobre o relatorio
 ppFooter :: Int -> String
-ppFooter x = unlines [ ppWord "Total" 19 ++ ppWord (show (totalVendas x)) 14 ++ "R$ " ++ show (totalReceita x),
-                       ppWord "Maior" 19 ++ ppWord (show (maiorVendas x)) 14,
-                       ppWord "Menor" 19 ++ ppWord (show (menorVendas x)) 14,
-                       ppWord "Venda Zerada" 19 ++ ppWord (show 0) 14,
+ppFooter x = unlines [ ppWordLeft "Total" 19 ++ ppWordLeft (show (totalVendas x)) 14 ++ "R$ " ++ show (totalReceita x),
+                       ppWordLeft "Maior" 19 ++ ppWordLeft (show (maiorVendas x)) 14,
+                       ppWordLeft "Menor" 19 ++ ppWordLeft (show (menorVendas x)) 14,
+                       ppWordLeft "Venda Zerada" 19 ++ ppWordLeft (show (vendaZerada x)) 14,
                        "",
-                       ppWord "Preço do Produto" 19 ++ ppWord ("R$ " ++ show preco) 14,
-                       "\n" ]
+                       ppWordLeft "Preço do Produto" 19 ++ ppWordLeft ("R$ " ++ show preco) 14,
+                       "" ]
 
+-- recebe um inteiro que representa ate que mês deve se olhar o relatorio
+-- para retornar o total de vendas ( dentre os meses analizados )
 totalVendas :: Int -> Int
 totalVendas x = somadorVenda x 1
 
+-- função auxiliar de totalVendas, olha recursivamente o relatorio, retornando
+-- a soma da quantidade de vendas ( dentre os meses analizados )
 somadorVenda :: Int -> Int -> Int
 somadorVenda x y | y <= x = vendas y + somadorVenda x (y+1)
                  | otherwise = 0
 
+-- recebe um inteiro que representa ate que mês deve se olhar o relatorio
+-- para retornar o total gerado em receita ( dentre os meses analizados )
 totalReceita :: Int -> Float
 totalReceita x = fromIntegral (totalVendas x) * preco
 
+-- recebe um inteiro que representa ate que mês deve se olhar o relatorio
+-- para retornar qual a maior quantidade de vendas nos meses analizados
 maiorVendas :: Int -> Int
 maiorVendas x = maior x 0
 
+-- função auxiliar de maiorVendas, olha recursivamente o relatorio, retornando
+-- qual a maior quantidade de vendas ( dentre os messes analizados )
 maior :: Int -> Int -> Int
 maior x y | x == 0 = y
           | vendas x > y = maior (x-1) (vendas x)
           | otherwise = maior (x-1) y
 
+-- recebe um inteiro que representa ate que mês deve se olhar o relatorio
+-- para retornar qual a menor quantidade de vendas nos meses analizados
 menorVendas :: Int -> Int
 menorVendas x = menor x (maxBound :: Int)
 
+-- função auxiliar de menorVendas, olha recursivamente o relatorio, retornando
+-- qual a menor quantidade de vendas ( dentre os messes analizados )
 menor :: Int -> Int -> Int
 menor x y | x == 0 = y
           | vendas x < y = menor (x-1) (vendas x)
           | otherwise = menor (x-1) y
+
+-- recebe um inteiro que representa ate que mês deve se olhar o relatorio
+-- para retornar quantos meses houveram 0 vendas
+vendaZerada :: Int -> Int
+vendaZerada x = zerada x 0
+
+-- função auxiliar de vendaZerada, olha recursivamente o relatorio, contando
+-- quantas vendas zeradas se encontram
+zerada :: Int -> Int -> Int
+zerada x y | x == 0 = y
+           | vendas x == 0 = zerada (x-1) (y+1)
+           | otherwise = zerada (x-1) y
+
+
+-- recebe um inteiro que representa o mês e devolve a receita do mês
+receita :: Int -> Float
+receita x = fromIntegral(vendas x) * preco
 
 -- A seguinte função recebe um número inteiro n (n>=1 e n<=12) que
 -- representa um determinado mês e devolve a quantidade de vendas
