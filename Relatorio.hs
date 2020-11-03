@@ -61,6 +61,7 @@ addSpaceLeft xs x | x <= 0 = xs
 -- para retornar informações extra sobre o relatorio
 ppFooter :: Int -> String
 ppFooter x = unlines [ ppWordLeft "Total" 19 ++ ppWordLeft (show (totalVendas x)) 14 ++ "R$ " ++ show (totalReceita x),
+                       ppWordLeft "Média" 19 ++ ppWordLeft (show (mediaVendas x)) 14 ++ "R$ " ++ show (mediaReceita x),
                        ppWordLeft "Maior" 19 ++ ppWordLeft (show (maiorVendas x)) 14,
                        ppWordLeft "Menor" 19 ++ ppWordLeft (show (menorVendas x)) 14,
                        ppWordLeft "Venda Zerada" 19 ++ ppWordLeft (show (vendaZerada x)) 14,
@@ -83,6 +84,16 @@ somadorVenda x y | y <= x = vendas y + somadorVenda x (y+1)
 -- para retornar o total gerado em receita ( dentre os meses analizados )
 totalReceita :: Int -> Float
 totalReceita x = fromIntegral (totalVendas x) * preco
+
+-- recebe um inteiro que representa o mês e retorna a média das vendas, do mês
+-- um até o mês recebido
+mediaVendas :: Int -> Float
+mediaVendas x = (fromIntegral (totalVendas x)) / (fromIntegral x)
+
+-- recebe um inteiro que representa o mês e retorna a média da receita, do mês
+-- um até o mês recebido
+mediaReceita :: Int -> Float
+mediaReceita x = (totalReceita x) / (fromIntegral x)
 
 -- recebe um inteiro que representa ate que mês deve se olhar o relatorio
 -- para retornar qual a maior quantidade de vendas nos meses analizados
