@@ -23,8 +23,8 @@ pRow x = ppWordLeft (mes x) 19 ++ ppWordLeft (show (vendas x)) 14 ++ "R$ " ++ sh
 -- recebe um inteiro que representa o mês da tabela, retorna o nome do mês
 mes :: Int -> String
 mes x | x == 1  = "Janeiro"
-      | x == 3  = "Fevereiro"
-      | x == 2  = "Março"
+      | x == 2  = "Fevereiro"
+      | x == 3  = "Março"
       | x == 4  = "Abril"
       | x == 5  = "Maio"
       | x == 6  = "Junho"
